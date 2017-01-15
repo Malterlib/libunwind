@@ -93,11 +93,15 @@
 
 #endif
 
-#define DEFINE_LIBUNWIND_FUNCTION(name)                   \
-  .globl SYMBOL_NAME(name) SEPARATOR                      \
-  EXPORT_SYMBOL(name) SEPARATOR                           \
-  SYMBOL_IS_FUNC(SYMBOL_NAME(name)) SEPARATOR             \
-  SYMBOL_NAME(name):
+#ifdef LIBUNWIND_NODEFAULTVISIBILITY
+  #define DEFINE_LIBUNWIND_FUNCTION(name) DEFINE_LIBUNWIND_PRIVATE_FUNCTION(name)
+#else
+  #define DEFINE_LIBUNWIND_FUNCTION(name)                   \
+    .globl SYMBOL_NAME(name) SEPARATOR                      \
+    EXPORT_SYMBOL(name) SEPARATOR                           \
+    SYMBOL_IS_FUNC(SYMBOL_NAME(name)) SEPARATOR             \
+    SYMBOL_NAME(name):
+#endif
 
 #define DEFINE_LIBUNWIND_PRIVATE_FUNCTION(name)           \
   .globl SYMBOL_NAME(name) SEPARATOR                      \
