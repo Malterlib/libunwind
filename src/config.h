@@ -49,7 +49,11 @@
   #define _LIBUNWIND_HIDDEN
 #else
   // FIXME: these macros are not correct for COFF targets
-  #define _LIBUNWIND_EXPORT __attribute__((visibility("default")))
+  #ifdef LIBUNWIND_NODEFAULTVISIBILITY
+    #define _LIBUNWIND_EXPORT
+  #else
+    #define _LIBUNWIND_EXPORT __attribute__((visibility("default")))
+  #endif
   #define _LIBUNWIND_HIDDEN __attribute__((visibility("hidden")))
 #endif
 
